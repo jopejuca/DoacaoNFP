@@ -1,0 +1,507 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		8EC5774C1CE0AAAD00F3AFEA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EC5774B1CE0AAAD00F3AFEA /* AppDelegate.swift */; };
+		8EC5774E1CE0AAAD00F3AFEA /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EC5774D1CE0AAAD00F3AFEA /* ViewController.swift */; };
+		8EC577511CE0AAAD00F3AFEA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8EC5774F1CE0AAAD00F3AFEA /* Main.storyboard */; };
+		8EC577531CE0AAAD00F3AFEA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8EC577521CE0AAAD00F3AFEA /* Assets.xcassets */; };
+		8EC577561CE0AAAD00F3AFEA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8EC577541CE0AAAD00F3AFEA /* LaunchScreen.storyboard */; };
+		8EC577611CE0AAAD00F3AFEA /* Doac_a_o_NFPTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EC577601CE0AAAD00F3AFEA /* Doac_a_o_NFPTests.swift */; };
+		8EC5776C1CE0AAAD00F3AFEA /* Doac_a_o_NFPUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EC5776B1CE0AAAD00F3AFEA /* Doac_a_o_NFPUITests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		8EC5775D1CE0AAAD00F3AFEA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8EC577401CE0AAAD00F3AFEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8EC577471CE0AAAD00F3AFEA;
+			remoteInfo = "Doação NFP";
+		};
+		8EC577681CE0AAAD00F3AFEA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8EC577401CE0AAAD00F3AFEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8EC577471CE0AAAD00F3AFEA;
+			remoteInfo = "Doação NFP";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		8EC577481CE0AAAD00F3AFEA /* Doação NFP.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Doação NFP.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		8EC5774B1CE0AAAD00F3AFEA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		8EC5774D1CE0AAAD00F3AFEA /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		8EC577501CE0AAAD00F3AFEA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		8EC577521CE0AAAD00F3AFEA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		8EC577551CE0AAAD00F3AFEA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		8EC577571CE0AAAD00F3AFEA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8EC5775C1CE0AAAD00F3AFEA /* Doação NFPTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Doação NFPTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		8EC577601CE0AAAD00F3AFEA /* Doac_a_o_NFPTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Doac_a_o_NFPTests.swift; sourceTree = "<group>"; };
+		8EC577621CE0AAAD00F3AFEA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8EC577671CE0AAAD00F3AFEA /* Doação NFPUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Doação NFPUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		8EC5776B1CE0AAAD00F3AFEA /* Doac_a_o_NFPUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Doac_a_o_NFPUITests.swift; sourceTree = "<group>"; };
+		8EC5776D1CE0AAAD00F3AFEA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		8EC577451CE0AAAD00F3AFEA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8EC577591CE0AAAD00F3AFEA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8EC577641CE0AAAD00F3AFEA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		8EC5773F1CE0AAAD00F3AFEA = {
+			isa = PBXGroup;
+			children = (
+				8EC5774A1CE0AAAD00F3AFEA /* Doação NFP */,
+				8EC5775F1CE0AAAD00F3AFEA /* Doação NFPTests */,
+				8EC5776A1CE0AAAD00F3AFEA /* Doação NFPUITests */,
+				8EC577491CE0AAAD00F3AFEA /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		8EC577491CE0AAAD00F3AFEA /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8EC577481CE0AAAD00F3AFEA /* Doação NFP.app */,
+				8EC5775C1CE0AAAD00F3AFEA /* Doação NFPTests.xctest */,
+				8EC577671CE0AAAD00F3AFEA /* Doação NFPUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		8EC5774A1CE0AAAD00F3AFEA /* Doação NFP */ = {
+			isa = PBXGroup;
+			children = (
+				8EC5774B1CE0AAAD00F3AFEA /* AppDelegate.swift */,
+				8EC5774D1CE0AAAD00F3AFEA /* ViewController.swift */,
+				8EC5774F1CE0AAAD00F3AFEA /* Main.storyboard */,
+				8EC577521CE0AAAD00F3AFEA /* Assets.xcassets */,
+				8EC577541CE0AAAD00F3AFEA /* LaunchScreen.storyboard */,
+				8EC577571CE0AAAD00F3AFEA /* Info.plist */,
+			);
+			path = "Doação NFP";
+			sourceTree = "<group>";
+		};
+		8EC5775F1CE0AAAD00F3AFEA /* Doação NFPTests */ = {
+			isa = PBXGroup;
+			children = (
+				8EC577601CE0AAAD00F3AFEA /* Doac_a_o_NFPTests.swift */,
+				8EC577621CE0AAAD00F3AFEA /* Info.plist */,
+			);
+			path = "Doação NFPTests";
+			sourceTree = "<group>";
+		};
+		8EC5776A1CE0AAAD00F3AFEA /* Doação NFPUITests */ = {
+			isa = PBXGroup;
+			children = (
+				8EC5776B1CE0AAAD00F3AFEA /* Doac_a_o_NFPUITests.swift */,
+				8EC5776D1CE0AAAD00F3AFEA /* Info.plist */,
+			);
+			path = "Doação NFPUITests";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		8EC577471CE0AAAD00F3AFEA /* Doação NFP */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8EC577701CE0AAAD00F3AFEA /* Build configuration list for PBXNativeTarget "Doação NFP" */;
+			buildPhases = (
+				8EC577441CE0AAAD00F3AFEA /* Sources */,
+				8EC577451CE0AAAD00F3AFEA /* Frameworks */,
+				8EC577461CE0AAAD00F3AFEA /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Doação NFP";
+			productName = "Doação NFP";
+			productReference = 8EC577481CE0AAAD00F3AFEA /* Doação NFP.app */;
+			productType = "com.apple.product-type.application";
+		};
+		8EC5775B1CE0AAAD00F3AFEA /* Doação NFPTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8EC577731CE0AAAD00F3AFEA /* Build configuration list for PBXNativeTarget "Doação NFPTests" */;
+			buildPhases = (
+				8EC577581CE0AAAD00F3AFEA /* Sources */,
+				8EC577591CE0AAAD00F3AFEA /* Frameworks */,
+				8EC5775A1CE0AAAD00F3AFEA /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				8EC5775E1CE0AAAD00F3AFEA /* PBXTargetDependency */,
+			);
+			name = "Doação NFPTests";
+			productName = "Doação NFPTests";
+			productReference = 8EC5775C1CE0AAAD00F3AFEA /* Doação NFPTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		8EC577661CE0AAAD00F3AFEA /* Doação NFPUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8EC577761CE0AAAD00F3AFEA /* Build configuration list for PBXNativeTarget "Doação NFPUITests" */;
+			buildPhases = (
+				8EC577631CE0AAAD00F3AFEA /* Sources */,
+				8EC577641CE0AAAD00F3AFEA /* Frameworks */,
+				8EC577651CE0AAAD00F3AFEA /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				8EC577691CE0AAAD00F3AFEA /* PBXTargetDependency */,
+			);
+			name = "Doação NFPUITests";
+			productName = "Doação NFPUITests";
+			productReference = 8EC577671CE0AAAD00F3AFEA /* Doação NFPUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		8EC577401CE0AAAD00F3AFEA /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0730;
+				LastUpgradeCheck = 0730;
+				ORGANIZATIONNAME = "Joao Pedro";
+				TargetAttributes = {
+					8EC577471CE0AAAD00F3AFEA = {
+						CreatedOnToolsVersion = 7.3;
+					};
+					8EC5775B1CE0AAAD00F3AFEA = {
+						CreatedOnToolsVersion = 7.3;
+						TestTargetID = 8EC577471CE0AAAD00F3AFEA;
+					};
+					8EC577661CE0AAAD00F3AFEA = {
+						CreatedOnToolsVersion = 7.3;
+						TestTargetID = 8EC577471CE0AAAD00F3AFEA;
+					};
+				};
+			};
+			buildConfigurationList = 8EC577431CE0AAAD00F3AFEA /* Build configuration list for PBXProject "Doação NFP" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 8EC5773F1CE0AAAD00F3AFEA;
+			productRefGroup = 8EC577491CE0AAAD00F3AFEA /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				8EC577471CE0AAAD00F3AFEA /* Doação NFP */,
+				8EC5775B1CE0AAAD00F3AFEA /* Doação NFPTests */,
+				8EC577661CE0AAAD00F3AFEA /* Doação NFPUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		8EC577461CE0AAAD00F3AFEA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8EC577561CE0AAAD00F3AFEA /* LaunchScreen.storyboard in Resources */,
+				8EC577531CE0AAAD00F3AFEA /* Assets.xcassets in Resources */,
+				8EC577511CE0AAAD00F3AFEA /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8EC5775A1CE0AAAD00F3AFEA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8EC577651CE0AAAD00F3AFEA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8EC577441CE0AAAD00F3AFEA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8EC5774E1CE0AAAD00F3AFEA /* ViewController.swift in Sources */,
+				8EC5774C1CE0AAAD00F3AFEA /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8EC577581CE0AAAD00F3AFEA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8EC577611CE0AAAD00F3AFEA /* Doac_a_o_NFPTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8EC577631CE0AAAD00F3AFEA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8EC5776C1CE0AAAD00F3AFEA /* Doac_a_o_NFPUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		8EC5775E1CE0AAAD00F3AFEA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8EC577471CE0AAAD00F3AFEA /* Doação NFP */;
+			targetProxy = 8EC5775D1CE0AAAD00F3AFEA /* PBXContainerItemProxy */;
+		};
+		8EC577691CE0AAAD00F3AFEA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8EC577471CE0AAAD00F3AFEA /* Doação NFP */;
+			targetProxy = 8EC577681CE0AAAD00F3AFEA /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		8EC5774F1CE0AAAD00F3AFEA /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8EC577501CE0AAAD00F3AFEA /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		8EC577541CE0AAAD00F3AFEA /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8EC577551CE0AAAD00F3AFEA /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		8EC5776E1CE0AAAD00F3AFEA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		8EC5776F1CE0AAAD00F3AFEA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		8EC577711CE0AAAD00F3AFEA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = "Doação NFP/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.pedrocandido.Doac-a-o-NFP";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		8EC577721CE0AAAD00F3AFEA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = "Doação NFP/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.pedrocandido.Doac-a-o-NFP";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		8EC577741CE0AAAD00F3AFEA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = "Doação NFPTests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.pedrocandido.Doac-a-o-NFPTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Doação NFP.app/Doação NFP";
+			};
+			name = Debug;
+		};
+		8EC577751CE0AAAD00F3AFEA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = "Doação NFPTests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.pedrocandido.Doac-a-o-NFPTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Doação NFP.app/Doação NFP";
+			};
+			name = Release;
+		};
+		8EC577771CE0AAAD00F3AFEA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = "Doação NFPUITests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.pedrocandido.Doac-a-o-NFPUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = "Doação NFP";
+			};
+			name = Debug;
+		};
+		8EC577781CE0AAAD00F3AFEA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = "Doação NFPUITests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.pedrocandido.Doac-a-o-NFPUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = "Doação NFP";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		8EC577431CE0AAAD00F3AFEA /* Build configuration list for PBXProject "Doação NFP" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8EC5776E1CE0AAAD00F3AFEA /* Debug */,
+				8EC5776F1CE0AAAD00F3AFEA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8EC577701CE0AAAD00F3AFEA /* Build configuration list for PBXNativeTarget "Doação NFP" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8EC577711CE0AAAD00F3AFEA /* Debug */,
+				8EC577721CE0AAAD00F3AFEA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		8EC577731CE0AAAD00F3AFEA /* Build configuration list for PBXNativeTarget "Doação NFPTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8EC577741CE0AAAD00F3AFEA /* Debug */,
+				8EC577751CE0AAAD00F3AFEA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		8EC577761CE0AAAD00F3AFEA /* Build configuration list for PBXNativeTarget "Doação NFPUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8EC577771CE0AAAD00F3AFEA /* Debug */,
+				8EC577781CE0AAAD00F3AFEA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 8EC577401CE0AAAD00F3AFEA /* Project object */;
+}

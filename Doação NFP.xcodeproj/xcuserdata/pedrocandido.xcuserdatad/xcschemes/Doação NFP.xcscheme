@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Scheme
+   LastUpgradeVersion = "0730"
+   version = "1.3">
+   <BuildAction
+      parallelizeBuildables = "YES"
+      buildImplicitDependencies = "YES">
+      <BuildActionEntries>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "8EC577471CE0AAAD00F3AFEA"
+               BuildableName = "Doac&#x327;a&#x303;o NFP.app"
+               BlueprintName = "Doac&#x327;a&#x303;o NFP"
+               ReferencedContainer = "container:Doac&#x327;a&#x303;o NFP.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+      </BuildActionEntries>
+   </BuildAction>
+   <TestAction
+      buildConfiguration = "Debug"
+      selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
+      selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
+      shouldUseLaunchSchemeArgsEnv = "YES">
+      <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "8EC5775B1CE0AAAD00F3AFEA"
+               BuildableName = "Doac&#x327;a&#x303;o NFPTests.xctest"
+               BlueprintName = "Doac&#x327;a&#x303;o NFPTests"
+               ReferencedContainer = "container:Doac&#x327;a&#x303;o NFP.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "8EC577661CE0AAAD00F3AFEA"
+               BuildableName = "Doac&#x327;a&#x303;o NFPUITests.xctest"
+               BlueprintName = "Doac&#x327;a&#x303;o NFPUITests"
+               ReferencedContainer = "container:Doac&#x327;a&#x303;o NFP.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+      </Testables>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "8EC577471CE0AAAD00F3AFEA"
+            BuildableName = "Doac&#x327;a&#x303;o NFP.app"
+            BlueprintName = "Doac&#x327;a&#x303;o NFP"
+            ReferencedContainer = "container:Doac&#x327;a&#x303;o NFP.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
+      <AdditionalOptions>
+      </AdditionalOptions>
+   </TestAction>
+   <LaunchAction
+      buildConfiguration = "Debug"
+      selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
+      selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
+      launchStyle = "0"
+      useCustomWorkingDirectory = "NO"
+      ignoresPersistentStateOnLaunch = "NO"
+      debugDocumentVersioning = "YES"
+      debugServiceExtension = "internal"
+      allowLocationSimulation = "YES">
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "8EC577471CE0AAAD00F3AFEA"
+            BuildableName = "Doac&#x327;a&#x303;o NFP.app"
+            BlueprintName = "Doac&#x327;a&#x303;o NFP"
+            ReferencedContainer = "container:Doac&#x327;a&#x303;o NFP.xcodeproj">
+         </BuildableReference>
+      </BuildableProductRunnable>
+      <AdditionalOptions>
+      </AdditionalOptions>
+   </LaunchAction>
+   <ProfileAction
+      buildConfiguration = "Release"
+      shouldUseLaunchSchemeArgsEnv = "YES"
+      savedToolIdentifier = ""
+      useCustomWorkingDirectory = "NO"
+      debugDocumentVersioning = "YES">
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "8EC577471CE0AAAD00F3AFEA"
+            BuildableName = "Doac&#x327;a&#x303;o NFP.app"
+            BlueprintName = "Doac&#x327;a&#x303;o NFP"
+            ReferencedContainer = "container:Doac&#x327;a&#x303;o NFP.xcodeproj">
+         </BuildableReference>
+      </BuildableProductRunnable>
+   </ProfileAction>
+   <AnalyzeAction
+      buildConfiguration = "Debug">
+   </AnalyzeAction>
+   <ArchiveAction
+      buildConfiguration = "Release"
+      revealArchiveInOrganizer = "YES">
+   </ArchiveAction>
+</Scheme>
