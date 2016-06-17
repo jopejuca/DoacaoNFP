@@ -159,22 +159,29 @@ class FazendaBot
 		
 		return true;
 	}
+	/*
+	Função listDonations: Função para listar as doações feitas no período especificado.
+	Entradas: 
+	- month (int) - Mês no formato numérico. Deve estar entre 1 e 12.
+	- year (int) - Ano do período. Deve estar entre 2009 e o ano atual.
+	Saída: bool false se ocorrer algum erro (leia a variável lastError para mais informações) ou um array contendo as doações. O array pode conter 0 itens, indicando que não houve nenhuma doação no período.
+	*/
 	public function listDonations($month, $year)
 	{
 		//Tratamento de erros
 		if(!$this->isLogged)
 		{
-			$this->lastError = "O bot não está logado.";			
+			$this->lastError = "O bot não está logado. Chame a função doLogin() antes de executar alguma requisição.";			
 			return false;
 		}		
-		if(!is_numeric($month) || is_numeric($month) && $month <= 0)
+		if(!is_numeric($month) || is_numeric($month) && ($month <= 0 || $month > 12))
 		{
-			$this->lastError = "O valor do mês não é valido";			
+			$this->lastError = "O valor do mês não é valido. Deve estar entre 1 e 12.";			
 			return false;
 		}
-		if(!is_numeric($year) || is_numeric($year) && $year <= 0)
+		if(!is_numeric($year) || is_numeric($year) && ($year < 2008 || $year > date('Y')))
 		{
-			$this->lastError = "O valor do ano não é valido";			
+			$this->lastError = "O valor do ano não é valido. Deve estar entre 2009 e ".date('Y');			
 			return false;
 		}		
 		
@@ -194,7 +201,7 @@ class FazendaBot
 		}
 		
 		$searchInfo = array(
-		'ctl00$ConteudoPagina$ddlMes' 		=> $month,
+		'ctl00$ConteudoPagina$ddlMes' 		=> str_pad($month, 2, '0', STR_PAD_LEFT),
 		'ctl00$ConteudoPagina$ddlAno' 		=> $year,
 		'ctl00$ConteudoPagina$btnBuscar'	=> 'Buscar Notas',
 		'__EVENTTARGET' => '',
@@ -220,13 +227,9 @@ class FazendaBot
 			return false;
 		}	
 		
-		if(strpos($notasResult->nodeValue, "gridViewEmptyMsg") !== false)
+		if(strpos($notasResult->nodeValue, "Nenhum registro") === false)
 		{
-			array_push($returnArray, "Nenhum registro foi localizado.");
-		}
-		else
-		{
-			
+			//ToDO: Parsing da lista de doações.
 		}
 		
 		return $returnArray;
@@ -259,14 +262,14 @@ class FazendaBot
 		$options = array(
             CURLOPT_RETURNTRANSFER => true,     // Retornar web page.            
             CURLOPT_FOLLOWLOCATION => true,     // Seguir redirects.
-			CURLOPT_RETURNTRANSFER => true,			
-            CURLOPT_AUTOREFERER    => true,     // Setar 'Referer' no redirect.
+			CURLOPT_RETURNTRANSFER => true,	   // Setar 'Referer' no redirect.
             CURLOPT_CONNECTTIMEOUT => 30,      // Timeout de conexão (s).
             CURLOPT_TIMEOUT        => 30,      // Timeout de resposta (s).
             CURLOPT_MAXREDIRS      => 10,       // Máx. de 10 redirects.            
             CURLOPT_SSL_VERIFYPEER => false,     // Verificação de certificado SSL.
             CURLOPT_HTTP_VERSION   => CURL_HTTP_VERSION_1_1,
 			CURLOPT_URL 		   => $url,
+			CURLOPT_REFERER		   => $url,
 			CURLOPT_USERAGENT      => $this->userAgent,
 			CURLOPT_COOKIEJAR      => $this->cookies,
 			CURLOPT_COOKIEFILE 	   => $this->cookies
