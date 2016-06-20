@@ -37,25 +37,22 @@ class FazendaBot
      * Identificador do browser do requisitante.
      * @var string
      */	
-	private $userAgent = "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.13) Gecko/20080311 Firefox/2.0.0.13";
-	
-	//Variáveis públicas
-	
+	private $userAgent = "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.13) Gecko/20080311 Firefox/2.0.0.13";	
 	/**
      * Indica se o bot está autenticado ou não.
      * @var boolean
      */	
-	public $isLogged = false;
+	private $isLogged = false;
 	/**
      * Endereço da imagem do captcha caso ele apareça.
      * @var string
      */		
-	public $captchaUrl = "";
+	private $captchaUrl = "";
 	/**
      * Detalhes do último erro ocorrido no bot.
      * @var string
      */	
-	public $lastError;
+	private $lastError;
 	
 	//Construtor
 	
@@ -70,6 +67,19 @@ class FazendaBot
 	
 	//Métodos públicos
 	
+	//Getters
+	function getIsLogged()
+	{
+		return $this->isLogged;
+	}
+	function getCaptchaUrl()
+	{
+		return $this->captchaUrl;
+	}
+	function getlastError()
+	{
+		return $this->lastError;
+	}
 	/*
 	Função checkSession: Função para verificar se a sessão atual do bot é válida, atualizando a variável $isLogged e armazenando valores para futuro login.
 	Entrada: nenhuma.
@@ -159,6 +169,79 @@ class FazendaBot
 		
 		return true;
 	}
+	/*
+	Função insertDonation: Função para inserir uma doação para um CNPJ especificado.
+	Entradas: 
+	- code (string) - Código da nota de 44 caracteres formatado.
+	- cnpj (string) - CNPJ da ong.
+	Saída: boolean, FALSE se houve algum erro (detalhes no lastError) ou TRUE caso nada for reportado.
+	*/
+	public function insertDonation($code, $cnpj)
+	{
+		//Tratamento de erros
+		if(!$this->isLogged)
+		{
+			$this->lastError = "O bot não está logado. Chame a função doLogin() antes de executar alguma requisição.";			
+			return false;
+		}		
+		
+		//GET na página para pegar as variáveis necessárias do formulário de busca.
+		$result = $this->postData("https://www.nfp.fazenda.sp.gov.br/EntidadesFilantropicas/DoacaoNotas.aspx");
+		
+		try
+		{
+			$doc = new DOMDocument();
+			@$doc->loadHTML($result);
+			
+			$this->viewState = $doc->getElementById('__VIEWSTATE')->getAttribute("value");
+			$this->viewStateGenerator = $doc->getElementById('__VIEWSTATEGENERATOR')->getAttribute("value");			
+			$codeFieldId =  $doc->getElementById('divDocComChave')->getElementsByTagName("input")->item(0)->attributes->getNamedItem("name")->nodeValue;		
+			$codeDate =  $doc->getElementById('infoDtNota')->getElementsByTagName("input")->item(0)->attributes->getNamedItem("name")->nodeValue;		
+			$codeNr =  $doc->getElementById('infoNrNota')->getElementsByTagName("input")->item(0)->attributes->getNamedItem("name")->nodeValue;		
+			$codeVal =  $doc->getElementById('infoVlNota')->getElementsByTagName("input")->item(0)->attributes->getNamedItem("name")->nodeValue;		
+		}
+		catch(Exception $e)
+		{
+		}
+		
+		$searchInfo = array(
+		$codeFieldId => $code,
+		$codeDate => '',
+		$codeNr => '',
+		$codeVal => '',
+		'ctl00$ConteudoPagina$txtCNPJEntidadeFilantropica' 		=> $cnpj,
+		'ctl00$ConteudoPagina$ddlTpNota' 											=> "CF",
+		'ctl00$ConteudoPagina$btnSalvarNota'	=> 'Registrar Doação',		
+		'ctl00$ConteudoPagina$hddKeyValueCtx'										=> '',
+		'__EVENTTARGET' => '',
+		'__EVENTARGUMENT' => '',
+		'__VIEWSTATE' => urlencode($this->viewState),			
+		'__VIEWSTATEGENERATOR' => urlencode($this->viewStateGenerator),		
+		'__VIEWSTATEENCRYPTED' => '',		
+		'__LASTFOCUS' => '',		
+		);
+		
+		//POST com os parâmetros informados...
+		$result = $this->postData("https://www.nfp.fazenda.sp.gov.br/EntidadesFilantropicas/DoacaoNotas.aspx", $searchInfo);	
+		
+		//Processamento de erros
+		$doc = new DOMDocument();
+		@$doc->loadHTML($result);
+		
+		$errorMessage = $doc->getElementById('lblErroMaster');
+		
+		if(strpos($result, "Ocorreu uma falha no processamento da requisi") !== FALSE)
+		{
+			$this->lastError = "Ocorreu uma falha no processamento da requisição.";			
+			return false;
+		}
+		if($errorMessage != NULL)
+		{
+			$this->lastError = $errorMessage->nodeValue;			
+			return false;
+		}
+		return true;
+	}	
 	/*
 	Função listDonations: Função para listar as doações feitas no período especificado.
 	Entradas: 
@@ -299,14 +382,4 @@ class FazendaBot
 		return $result;
 	}	
 }
-?>
- <head>
-<meta charset="UTF-8">
-</head> 
-<?php
-$bot = new FazendaBot("teste","10932327656","22284781");
-
-if(!$bot->doLogin())
-	echo $bot->lastError;
-var_dump($bot->listDonations(6,2016));
 ?>
