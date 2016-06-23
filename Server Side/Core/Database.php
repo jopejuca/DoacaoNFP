@@ -15,9 +15,20 @@ class Database
     */	
 	private $connection;
 	
-	//Construtor
+	//Variáveis estáticas
 	
-	function __construct($host, $username, $password, $database) 
+	private static $instance = null;	
+	
+	//Método do Singleton
+	public static function getInstance()
+	{
+		if(self::$instance == null)
+			self::$instance = new Database(Config::$Host, Config::$Username, Config::$Password, Config::$Database);
+		return self::$instance;
+	}
+	
+	//Construtor
+	private function __construct($host, $username, $password, $database) 
 	{
 		$this->database = $database;
 		$this->connection = new PDO("mysql:host=$host;dbname=".$database, $username, $password);
@@ -32,7 +43,7 @@ class Database
 	- params (array) - Array contendo apenas os valores de parâmetros (caso a query seja modelada com "?") ou uma array associativa (caso os valores estejam no formato :nomedoparametro).
 	Saída: booleano, retorna TRUE em caso de sucesso ou FALSE em caso de falha. 
 	*/
-	function executeQuery($sql, $params)
+	function executeQuery($sql, $params = array())
 	{
 		$query = $this->connection->prepare($sql);		
 		return $query->execute($params);
@@ -44,7 +55,7 @@ class Database
 	- params (array) - Array contendo apenas os valores de parâmetros (caso a query seja modelada com "?") ou uma array associativa (caso os valores estejam no formato :nomedoparametro).
 	Saída: Retorna uma array com os dados selecionados (se retornar um array com 0 elementos é que não há valores selecionados) ou FALSE caso aconteça algum erro.
 	*/
-	function readRequest($sql, $params)
+	function readRequest($sql, $params = array())
 	{
 		$query = $this->connection->prepare($sql);		
 		$query->execute($params);
@@ -59,6 +70,15 @@ class Database
 	function getLastError()
 	{
 		return $this->connection->errorCode().": ".$this->connection->errorInfo()[2];
-	}	
+	}
+	/*
+	Função getlastInsertId: Função que retorna o último ID inserido ou atualizado em alguma consulta.
+	Entrada: nenhuma.
+	Saída: string, contendo o útlimo ID inserido ou alterado.
+	*/
+	function getLastInsertId()
+	{
+		return $this->connection->lastInsertId();
+	}
 }
 ?>

@@ -1,4 +1,5 @@
 <?php
+require_once ('../core/Config.php');
 class FazendaBot
 {
 	//Variáveis privadas
@@ -19,20 +20,17 @@ class FazendaBot
      */
 	private $password;
 	/**
-     * Variável utilizada para login no site da Fazenda, contida no formulário de login.
+     * Variáveis utilizadas para login no site da Fazenda, contida no formulário de login, inserir nota, etc.
      * @var string
      */	
-	private $viewState = "";
-	/**
-     * Variável utilizada para login no site da Fazenda, contida no formulário de login.
-     * @var string
-     */	
-	private $viewStateGenerator = "";
-	/**
-     * Variável utilizada para login no site da Fazenda, contida no formulário de login.
-     * @var string
-     */		
+	private $viewState = "";	
+	private $viewStateGenerator = "";	
 	private $eventValidation = "";
+	private $codeFieldId;
+	private $codeCnpj;		
+	private $codeDate;
+	private $codeNr;	
+	private $codeVal;
 	/**
      * Identificador do browser do requisitante.
      * @var string
@@ -169,14 +167,107 @@ class FazendaBot
 		
 		return true;
 	}
+	public function getCapctha($pos = 1)
+	{
+		//Tratamento de erros
+		if(!$this->isLogged)
+		{
+			$this->lastError = "O bot não está logado. Chame a função doLogin() antes de executar alguma requisição.";			
+			return false;
+		}		
+		//GET na primeira página...
+		$result = $this->postData("https://www.nfp.fazenda.sp.gov.br/EntidadesFilantropicas/CadastroNotaEntidadeAviso.aspx");
+		
+		try
+		{
+			$doc = new DOMDocument();
+			@$doc->loadHTML($result);
+			
+			$this->viewState = $doc->getElementById('__VIEWSTATE')->getAttribute("value");
+			$this->viewStateGenerator = $doc->getElementById('__VIEWSTATEGENERATOR')->getAttribute("value");
+			$this->eventValidation = $doc->getElementById('__EVENTVALIDATION')->getAttribute("value");									
+		}
+		catch(Exception $e)
+		{
+		}
+		
+		$firstInfo = array(
+			'ctl00$ConteudoPagina$btnOk' => 'Prosseguir',			
+			'__EVENTTARGET' => '',
+			'__EVENTARGUMENT' => '',
+			'__VIEWSTATE' => urlencode($this->viewState),			
+			'__VIEWSTATEGENERATOR' => urlencode($this->viewStateGenerator),
+			'__EVENTVALIDATION' => urlencode($this->eventValidation)
+			);
+		
+		//POST com OK...		
+		$result = $this->postData("https://www.nfp.fazenda.sp.gov.br/EntidadesFilantropicas/CadastroNotaEntidadeAviso.aspx", $firstInfo);		
+			
+		try
+		{
+			$doc = new DOMDocument();
+			@$doc->loadHTML($result);
+			
+			$this->viewState = $doc->getElementById('__VIEWSTATE')->getAttribute("value");
+			$this->viewStateGenerator = $doc->getElementById('__VIEWSTATEGENERATOR')->getAttribute("value");
+			$this->eventValidation = $doc->getElementById('__EVENTVALIDATION')->getAttribute("value");
+			$id = $doc->getElementById('ddlEntidadeFilantropica')->getElementsByTagName("option")->item($pos)->attributes->getNamedItem("value")->nodeValue;			
+		}
+		catch(Exception $e)
+		{
+		}		
+		
+		$postInfo = array(
+			'ctl00$ConteudoPagina$hfEntidadeFilantropicaSelecionada' => "".$id,
+			'ctl00$ConteudoPagina$ddlEntidadeFilantropica' => "".$id,
+			'ctl00$ConteudoPagina$btnNovaNota' => 'Nova Nota',
+			'ctl00$ConteudoPagina$ddlMes' 		=> str_pad(date("m"), 2, '0', STR_PAD_LEFT),
+			'ctl00$ConteudoPagina$ddlAno' 		=> date("Y"),
+			'__EVENTTARGET' => '',
+			'__EVENTARGUMENT' => '',
+			'__VIEWSTATE' => urlencode($this->viewState),			
+			'__VIEWSTATEGENERATOR' => urlencode($this->viewStateGenerator),
+			'__EVENTVALIDATION' => urlencode($this->eventValidation)
+			);
+		
+		//POST na página para pegar as variáveis necessárias do formulário de preenchimento.
+		$result = $this->postData("https://www.nfp.fazenda.sp.gov.br/EntidadesFilantropicas/ListagemNotaEntidade.aspx", $postInfo);
+		
+		try
+		{
+			$doc = new DOMDocument();
+			@$doc->loadHTML($result);
+			
+			$this->viewState = $doc->getElementById('__VIEWSTATE')->getAttribute("value");
+			$this->viewStateGenerator = $doc->getElementById('__VIEWSTATEGENERATOR')->getAttribute("value");
+			$this->eventValidation = $doc->getElementById('__EVENTVALIDATION')->getAttribute("value");			
+			$this->codeFieldId =  $doc->getElementById('divDocComChave')->getElementsByTagName("input")->item(0)->attributes->getNamedItem("name")->nodeValue;
+			$this->codeCnpj =  $doc->getElementById('divCNPJEstabelecimento')->getElementsByTagName("input")->item(0)->attributes->getNamedItem("name")->nodeValue;		
+			$this->codeDate =  $doc->getElementById('divtxtDtNota')->getElementsByTagName("input")->item(0)->attributes->getNamedItem("name")->nodeValue;		
+			$this->codeNr =  $doc->getElementById('divtxtNrNota')->getElementsByTagName("input")->item(0)->attributes->getNamedItem("name")->nodeValue;		
+			$this->codeVal =  $doc->getElementById('divtxtVlNota')->getElementsByTagName("input")->item(0)->attributes->getNamedItem("name")->nodeValue;
+			$captchaVal = $doc->getElementById('captchaNFP');
+			
+			if($captchaVal != NULL)
+			{
+				return $captchaVal->getAttribute("src");
+			}
+		}
+		catch(Exception $e)
+		{
+		}
+		
+		return "";
+	}
 	/*
 	Função insertDonation: Função para inserir uma doação para um CNPJ especificado.
 	Entradas: 
 	- code (string) - Código da nota de 44 caracteres formatado.
-	- cnpj (string) - CNPJ da ong.
+	- captcha (string) - Resposta do captcha fornecida pelo usuário.
+	- pos (int) - (Opcional)Posição da entidade na lista de entidades em que o CPF está cadastrado.
 	Saída: boolean, FALSE se houve algum erro (detalhes no lastError) ou TRUE caso nada for reportado.
 	*/
-	public function insertDonation($code, $cnpj)
+	public function insertDonation($code, $captcha, $pos = 1)
 	{
 		//Tratamento de erros
 		if(!$this->isLogged)
@@ -185,50 +276,39 @@ class FazendaBot
 			return false;
 		}		
 		
-		//GET na página para pegar as variáveis necessárias do formulário de busca.
-		$result = $this->postData("https://www.nfp.fazenda.sp.gov.br/EntidadesFilantropicas/DoacaoNotas.aspx");
-		
-		try
-		{
-			$doc = new DOMDocument();
-			@$doc->loadHTML($result);
-			
-			$this->viewState = $doc->getElementById('__VIEWSTATE')->getAttribute("value");
-			$this->viewStateGenerator = $doc->getElementById('__VIEWSTATEGENERATOR')->getAttribute("value");			
-			$codeFieldId =  $doc->getElementById('divDocComChave')->getElementsByTagName("input")->item(0)->attributes->getNamedItem("name")->nodeValue;		
-			$codeDate =  $doc->getElementById('infoDtNota')->getElementsByTagName("input")->item(0)->attributes->getNamedItem("name")->nodeValue;		
-			$codeNr =  $doc->getElementById('infoNrNota')->getElementsByTagName("input")->item(0)->attributes->getNamedItem("name")->nodeValue;		
-			$codeVal =  $doc->getElementById('infoVlNota')->getElementsByTagName("input")->item(0)->attributes->getNamedItem("name")->nodeValue;		
-		}
-		catch(Exception $e)
-		{
-		}
-		
-		$searchInfo = array(
-		$codeFieldId => $code,
-		$codeDate => '',
-		$codeNr => '',
-		$codeVal => '',
-		'ctl00$ConteudoPagina$txtCNPJEntidadeFilantropica' 		=> $cnpj,
-		'ctl00$ConteudoPagina$ddlTpNota' 											=> "CF",
-		'ctl00$ConteudoPagina$btnSalvarNota'	=> 'Registrar Doação',		
+		$insertInfo = array(
+		$this->codeFieldId => $code,
+		$this->codeDate => '',
+		$this->codeNr => '',
+		$this->codeVal => '',
+		$this->codeCnpj => '',
+		'ctl00$ConteudoPagina$CaptchaSefaz$ImagemRand' => $captcha,		
+		'ctl00$ConteudoPagina$ddlTpNota' 											=> "CF",			
 		'ctl00$ConteudoPagina$hddKeyValueCtx'										=> '',
+		'ctl00$ConteudoPagina$btnSalvarNota' => 'Salvar Nota',
+		'ctl00$ConteudoPagina$ckbxtxtCNPJEstabelecimento' => 'on',
+		'ctl00$ConteudoPagina$ckbxddlTpNota' => 'on',
+		'ctl00$ConteudoPagina$ckbxtxtDtNota' => 'on',
+		'ctl00$ConteudoPagina$ckbxddlEntidadeFilantropica' => 'on',
 		'__EVENTTARGET' => '',
 		'__EVENTARGUMENT' => '',
 		'__VIEWSTATE' => urlencode($this->viewState),			
 		'__VIEWSTATEGENERATOR' => urlencode($this->viewStateGenerator),		
 		'__VIEWSTATEENCRYPTED' => '',		
-		'__LASTFOCUS' => '',		
+		'__LASTFOCUS' => '',
+		'__EVENTVALIDATION' => urlencode($this->eventValidation)		
 		);
 		
 		//POST com os parâmetros informados...
-		$result = $this->postData("https://www.nfp.fazenda.sp.gov.br/EntidadesFilantropicas/DoacaoNotas.aspx", $searchInfo);	
+		$result = $this->postData("https://www.nfp.fazenda.sp.gov.br/EntidadesFilantropicas/CadastroNotaEntidade.aspx", $insertInfo);	
 		
+		echo $result;
 		//Processamento de erros
 		$doc = new DOMDocument();
 		@$doc->loadHTML($result);
 		
 		$errorMessage = $doc->getElementById('lblErroMaster');
+		$errorMessage2 = $doc->getElementById('lblErro');
 		
 		if(strpos($result, "Ocorreu uma falha no processamento da requisi") !== FALSE)
 		{
@@ -238,6 +318,11 @@ class FazendaBot
 		if($errorMessage != NULL)
 		{
 			$this->lastError = $errorMessage->nodeValue;			
+			return false;
+		}		
+		if($errorMessage2 != NULL)
+		{
+			$this->lastError = $errorMessage2->nodeValue;			
 			return false;
 		}
 		return true;
@@ -336,7 +421,7 @@ class FazendaBot
 		- (Opcional) postValues (array) - Array contendo os valores da requisição POST, caso necessário.
 	Saída: boolean, indicando se o login foi feito com suceso ou não.
 	*/
-	private function postData($url, $postValues = null)
+	private function postData($url, $postValues = null, $referer = null)
 	{
 		//Iniciando requisição CURL GET.
 		$ch = curl_init();
@@ -359,7 +444,8 @@ class FazendaBot
 		);
 			
 		curl_setopt_array( $ch, $options );	
-		
+		if($referer != null)
+			curl_setopt($ch, CURLOPT_REFERER, $referer);
 		//Se houver valores no post, então adiciona-os a requisição, transformando-a em POST.		
 		if($postValues != null)
 		{
