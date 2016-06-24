@@ -3,7 +3,11 @@ require_once ('../core/Config.php');
 class FazendaBot
 {
 	//Variáveis privadas
-	
+	/**
+     * ID de sessão gerado pelo PHP vinculada ao usuário.
+     * @var string
+     */
+	 private $sessionId;
 	/**
      * Caminho para o arquivo onde os cookies serão armazenados.
      * @var string
@@ -23,24 +27,25 @@ class FazendaBot
      * Variáveis utilizadas para login no site da Fazenda, contida no formulário de login, inserir nota, etc.
      * @var string
      */	
-	private $viewState = "";	
-	private $viewStateGenerator = "";	
-	private $eventValidation = "";
+	private $viewState;	
+	private $viewStateGenerator;	
+	private $eventValidation;
 	private $codeFieldId;
 	private $codeCnpj;		
 	private $codeDate;
 	private $codeNr;	
 	private $codeVal;
+	private $DCSIMG;
 	/**
      * Identificador do browser do requisitante.
      * @var string
      */	
-	private $userAgent = "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.13) Gecko/20080311 Firefox/2.0.0.13";	
+	private $userAgent = "Mozilla/5.0 (Windows NT 10.0; WOW64; rv:47.0) Gecko/20100101 Firefox/47.0";	
 	/**
      * Indica se o bot está autenticado ou não.
      * @var boolean
      */	
-	private $isLogged = false;
+	private $isLogged;
 	/**
      * Endereço da imagem do captcha caso ele apareça.
      * @var string
@@ -56,11 +61,10 @@ class FazendaBot
 	
 	function __construct($sessionId, $user, $pass) 
 	{
-		$this->cookies = sys_get_temp_dir().'/'.$sessionId.'.txt';
+		$this->sessionId = $sessionId;
+		$this->cookies = Config::$TempPath.'/'.$sessionId.'.txt';
 		$this->username = $user;
-		$this->password = $pass;		
-		$this->isLogged = false;
-		$this->checkSession();
+		$this->password = $pass;	
 	}
 	
 	//Métodos públicos
@@ -77,6 +81,11 @@ class FazendaBot
 	function getlastError()
 	{
 		return $this->lastError;
+	}
+	//Setters
+	function setIsLogged($value)
+	{
+		$this->isLogged = $value;
 	}
 	/*
 	Função checkSession: Função para verificar se a sessão atual do bot é válida, atualizando a variável $isLogged e armazenando valores para futuro login.
@@ -97,7 +106,7 @@ class FazendaBot
 			
 			//Se não está logado, armazena informações para futuro login.
 			if(!$this->isLogged)
-			{			
+			{
 				$this->viewState = $doc->getElementById('__VIEWSTATE')->getAttribute("value");
 				$this->viewStateGenerator = $doc->getElementById('__VIEWSTATEGENERATOR')->getAttribute("value");
 				$this->eventValidation = $doc->getElementById('__EVENTVALIDATION')->getAttribute("value");
@@ -126,7 +135,6 @@ class FazendaBot
 		
 		if($this->captchaUrl != "" && $captchaValue == null)
 		{
-			echo "Digite o captcha: <img src='$captchaUrl'></img>";
 			return false;
 		}
 		
@@ -138,9 +146,9 @@ class FazendaBot
 			'ctl00$ConteudoPagina$Login1$rblTipo' => "rdBtnNaoContribuinte",
 			'__EVENTTARGET' => '',
 			'__EVENTARGUMENT' => '',
-			'__VIEWSTATE' => urlencode($this->viewState),			
-			'__VIEWSTATEGENERATOR' => urlencode($this->viewStateGenerator),
-			'__EVENTVALIDATION' => urlencode($this->eventValidation)
+			'__VIEWSTATE' => ($this->viewState),			
+			'__VIEWSTATEGENERATOR' => ($this->viewStateGenerator),
+			'__EVENTVALIDATION' => ($this->eventValidation)
 			);
 			
 		$result = $this->postData("https://www.nfp.fazenda.sp.gov.br/login.aspx", $loginInfo);
@@ -150,17 +158,19 @@ class FazendaBot
 		
 		//Verificação de erro no login...
 		$errorMessage = $doc->getElementById('lblErroMaster');
+		
 		if(strpos($result, "Ocorreu uma falha no processamento da requisi") !== FALSE)
 		{
 			$this->lastError = "Ocorreu uma falha no processamento da requisição.";
 			$this->isLogged = false;
 			return false;
 		}
-		if($errorMessage != NULL)
+		
+		if($errorMessage != NULL && $errorMessage->nodeValue != "")
 		{
-			$this->lastError = utf8_decode($errorMessage->nodeValue);
+			$this->lastError = $errorMessage->nodeValue;
 			$this->isLogged = false;
-			return false;
+			return false;			
 		}
 		
 		$this->isLogged = true;	
@@ -169,12 +179,14 @@ class FazendaBot
 	}
 	public function getCapctha($pos = 1)
 	{
+		
 		//Tratamento de erros
 		if(!$this->isLogged)
 		{
 			$this->lastError = "O bot não está logado. Chame a função doLogin() antes de executar alguma requisição.";			
 			return false;
-		}		
+		}
+		
 		//GET na primeira página...
 		$result = $this->postData("https://www.nfp.fazenda.sp.gov.br/EntidadesFilantropicas/CadastroNotaEntidadeAviso.aspx");
 		
@@ -195,9 +207,9 @@ class FazendaBot
 			'ctl00$ConteudoPagina$btnOk' => 'Prosseguir',			
 			'__EVENTTARGET' => '',
 			'__EVENTARGUMENT' => '',
-			'__VIEWSTATE' => urlencode($this->viewState),			
-			'__VIEWSTATEGENERATOR' => urlencode($this->viewStateGenerator),
-			'__EVENTVALIDATION' => urlencode($this->eventValidation)
+			'__VIEWSTATE' => ($this->viewState),			
+			'__VIEWSTATEGENERATOR' => ($this->viewStateGenerator),
+			'__EVENTVALIDATION' => ($this->eventValidation)
 			);
 		
 		//POST com OK...		
@@ -211,6 +223,13 @@ class FazendaBot
 			$this->viewState = $doc->getElementById('__VIEWSTATE')->getAttribute("value");
 			$this->viewStateGenerator = $doc->getElementById('__VIEWSTATEGENERATOR')->getAttribute("value");
 			$this->eventValidation = $doc->getElementById('__EVENTVALIDATION')->getAttribute("value");
+			
+			if($doc->getElementById('ddlEntidadeFilantropica') == null)
+			{
+				$this->lastError = "Ocorreu um erro durante a requisição do Captcha.";			
+				return false;
+			}
+			
 			$id = $doc->getElementById('ddlEntidadeFilantropica')->getElementsByTagName("option")->item($pos)->attributes->getNamedItem("value")->nodeValue;			
 		}
 		catch(Exception $e)
@@ -225,9 +244,9 @@ class FazendaBot
 			'ctl00$ConteudoPagina$ddlAno' 		=> date("Y"),
 			'__EVENTTARGET' => '',
 			'__EVENTARGUMENT' => '',
-			'__VIEWSTATE' => urlencode($this->viewState),			
-			'__VIEWSTATEGENERATOR' => urlencode($this->viewStateGenerator),
-			'__EVENTVALIDATION' => urlencode($this->eventValidation)
+			'__VIEWSTATE' => ($this->viewState),			
+			'__VIEWSTATEGENERATOR' => ($this->viewStateGenerator),
+			'__EVENTVALIDATION' => ($this->eventValidation)
 			);
 		
 		//POST na página para pegar as variáveis necessárias do formulário de preenchimento.
@@ -246,12 +265,15 @@ class FazendaBot
 			$this->codeDate =  $doc->getElementById('divtxtDtNota')->getElementsByTagName("input")->item(0)->attributes->getNamedItem("name")->nodeValue;		
 			$this->codeNr =  $doc->getElementById('divtxtNrNota')->getElementsByTagName("input")->item(0)->attributes->getNamedItem("name")->nodeValue;		
 			$this->codeVal =  $doc->getElementById('divtxtVlNota')->getElementsByTagName("input")->item(0)->attributes->getNamedItem("name")->nodeValue;
-			$captchaVal = $doc->getElementById('captchaNFP');
+			$this->DCSIMG =  $doc->getElementById('DCSIMG')->getAttribute("src");
+			$captchaVal = $doc->getElementById('captchaNFP');			
 			
 			if($captchaVal != NULL)
 			{
 				return $captchaVal->getAttribute("src");
 			}
+			
+			
 		}
 		catch(Exception $e)
 		{
@@ -263,46 +285,59 @@ class FazendaBot
 	Função insertDonation: Função para inserir uma doação para um CNPJ especificado.
 	Entradas: 
 	- code (string) - Código da nota de 44 caracteres formatado.
-	- captcha (string) - Resposta do captcha fornecida pelo usuário.
+	- captcha (string) - (Opcional)Resposta do captcha fornecida pelo usuário.
 	- pos (int) - (Opcional)Posição da entidade na lista de entidades em que o CPF está cadastrado.
 	Saída: boolean, FALSE se houve algum erro (detalhes no lastError) ou TRUE caso nada for reportado.
 	*/
-	public function insertDonation($code, $captcha, $pos = 1)
+	public function insertDonation($code, $captcha = null, $pos = 1)
 	{
 		//Tratamento de erros
 		if(!$this->isLogged)
 		{
 			$this->lastError = "O bot não está logado. Chame a função doLogin() antes de executar alguma requisição.";			
 			return false;
-		}		
+		}
+		if(preg_match('/([0-9][0-9][0-9][0-9]-){10}[0-9][0-9][0-9][0-9]/', $code) == 0)
+		{
+			$this->lastError = "O código da nota está no formato incorreto. Deve ser formatado da seguinte maneira: 0000-0000-0000-0000-0000-0000-0000-0000-0000-0000-0000";			
+			return false;
+		}
 		
 		$insertInfo = array(
-		$this->codeFieldId => $code,
-		$this->codeDate => '',
-		$this->codeNr => '',
-		$this->codeVal => '',
-		$this->codeCnpj => '',
-		'ctl00$ConteudoPagina$CaptchaSefaz$ImagemRand' => $captcha,		
-		'ctl00$ConteudoPagina$ddlTpNota' 											=> "CF",			
-		'ctl00$ConteudoPagina$hddKeyValueCtx'										=> '',
-		'ctl00$ConteudoPagina$btnSalvarNota' => 'Salvar Nota',
-		'ctl00$ConteudoPagina$ckbxtxtCNPJEstabelecimento' => 'on',
-		'ctl00$ConteudoPagina$ckbxddlTpNota' => 'on',
-		'ctl00$ConteudoPagina$ckbxtxtDtNota' => 'on',
-		'ctl00$ConteudoPagina$ckbxddlEntidadeFilantropica' => 'on',
+		'__LASTFOCUS' => '',
+		'__VIEWSTATE' => $this->viewState,
+		'__VIEWSTATEGENERATOR' => $this->viewStateGenerator,
 		'__EVENTTARGET' => '',
 		'__EVENTARGUMENT' => '',
-		'__VIEWSTATE' => urlencode($this->viewState),			
-		'__VIEWSTATEGENERATOR' => urlencode($this->viewStateGenerator),		
-		'__VIEWSTATEENCRYPTED' => '',		
-		'__LASTFOCUS' => '',
-		'__EVENTVALIDATION' => urlencode($this->eventValidation)		
+		'__VIEWSTATEENCRYPTED' => '',
+		'__EVENTVALIDATION' => $this->eventValidation,
+		'ctl00$ConteudoPagina$ckbxddlEntidadeFilantropica' => 'on',
+		$this->codeFieldId => $code,
+		$this->codeCnpj => '',
+		'ctl00$ConteudoPagina$ckbxtxtCNPJEstabelecimento' => 'on',
+		'ctl00$ConteudoPagina$ddlTpNota' 	=> "CF",
+		'ctl00$ConteudoPagina$ckbxddlTpNota' => 'on',
+		$this->codeDate => '',
+		'ctl00$ConteudoPagina$ckbxtxtDtNota' => 'on',
+		$this->codeNr => '',
+		$this->codeVal => '',		
+		'ctl00$ConteudoPagina$btnSalvarNota' => ('Salvar Nota'),							
 		);
 		
-		//POST com os parâmetros informados...
-		$result = $this->postData("https://www.nfp.fazenda.sp.gov.br/EntidadesFilantropicas/CadastroNotaEntidade.aspx", $insertInfo);	
+		if($captcha != null)
+			$insertInfo['ctl00$ConteudoPagina$CaptchaSefaz$ImagemRand'] = $captcha;
 		
-		echo $result;
+		//JSON definindo o campo
+		$jsonData = array(
+		"valor"=>"",
+		"campo" => substr($this->codeFieldId, strlen($this->codeFieldId) - 32, 32)
+		);	
+		
+		$this->postDataJson("https://www.nfp.fazenda.sp.gov.br/EntidadesFilantropicas/CadastroNotaEntidade.aspx/DefinirValor", $jsonData);
+		
+		//POST com os parâmetros informados...
+		$result = $this->postData("https://www.nfp.fazenda.sp.gov.br/EntidadesFilantropicas/CadastroNotaEntidade.aspx", $insertInfo, "https://www.nfp.fazenda.sp.gov.br/EntidadesFilantropicas/ListagemNotaEntidade.aspx");	
+		
 		//Processamento de erros
 		$doc = new DOMDocument();
 		@$doc->loadHTML($result);
@@ -315,15 +350,17 @@ class FazendaBot
 			$this->lastError = "Ocorreu uma falha no processamento da requisição.";			
 			return false;
 		}
-		if($errorMessage != NULL)
+		
+		if($errorMessage != NULL && $errorMessage->nodeValue != "")
 		{
 			$this->lastError = $errorMessage->nodeValue;			
-			return false;
-		}		
-		if($errorMessage2 != NULL)
+			return false;			
+		}
+		
+		if($errorMessage2 != NULL && $errorMessage2->nodeValue != "")
 		{
 			$this->lastError = $errorMessage2->nodeValue;			
-			return false;
+			return false;			
 		}
 		return true;
 	}	
@@ -374,9 +411,9 @@ class FazendaBot
 		'ctl00$ConteudoPagina$btnBuscar'	=> 'Buscar Notas',
 		'__EVENTTARGET' => '',
 		'__EVENTARGUMENT' => '',
-		'__VIEWSTATE' => urlencode($this->viewState),			
-		'__VIEWSTATEGENERATOR' => urlencode($this->viewStateGenerator),
-		'__EVENTVALIDATION' => urlencode($this->eventValidation)
+		'__VIEWSTATE' => ($this->viewState),			
+		'__VIEWSTATEGENERATOR' => ($this->viewStateGenerator),
+		'__EVENTVALIDATION' => ($this->eventValidation)
 		);
 		
 		//POST com os parâmetros informados...
@@ -410,10 +447,76 @@ class FazendaBot
 	public function closeSession()
 	{
 		unlink($this->cookies);
-	}	
+	}
 	
+	public function downloadCaptcha($captchaUrl)
+	{
+		$url = "https://www.nfp.fazenda.sp.gov.br".str_replace("../","/", $captchaUrl);
+		
+		$saveto = Config::$TempPath."/".$this->sessionId.".jpg";
+		$ch = curl_init ($url);
+		curl_setopt($ch, CURLOPT_HEADER, 0);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_BINARYTRANSFER,1);
+		curl_setopt($ch, CURLOPT_USERAGENT, $this->userAgent);
+		curl_setopt($ch, CURLOPT_COOKIEJAR, $this->cookies);
+		curl_setopt($ch, CURLOPT_COOKIEFILE, $this->cookies);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER ,false);     // Verificação de certificado SSL.);
+		
+		$raw = curl_exec($ch);
+		curl_close ($ch);
+		
+		if(file_exists($saveto))
+		{
+			unlink($saveto);
+		}
+		$fp = fopen($saveto,'x');
+		fwrite($fp, $raw);
+		fclose($fp);
+		
+		return $saveto;
+	}
 	//Métodos privados
-	
+	private function postDataJson($url, $postValues, $referer = null)
+	{
+		//Iniciando requisição CURL GET.
+		$ch = curl_init();
+
+		//Setando algumas opções (URL, User Agent, Cookies, etc.)
+		$options = array(
+            CURLOPT_RETURNTRANSFER => true,     // Retornar web page.            
+            CURLOPT_FOLLOWLOCATION => true,     // Seguir redirects.
+			CURLOPT_RETURNTRANSFER => true,	   // Setar 'Referer' no redirect.
+            CURLOPT_CONNECTTIMEOUT => 30,      // Timeout de conexão (s).
+            CURLOPT_TIMEOUT        => 30,      // Timeout de resposta (s).
+            CURLOPT_MAXREDIRS      => 10,       // Máx. de 10 redirects.            
+            CURLOPT_SSL_VERIFYPEER => false,     // Verificação de certificado SSL.
+            CURLOPT_HTTP_VERSION   => CURL_HTTP_VERSION_1_1,
+			CURLOPT_URL 		   => $url,
+			CURLOPT_REFERER		   => $url,
+			CURLOPT_USERAGENT      => $this->userAgent,
+			CURLOPT_COOKIEJAR      => $this->cookies,
+			CURLOPT_COOKIEFILE 	   => $this->cookies,
+			CURLOPT_HTTPHEADER => array('Content-Type: application/json')
+		);
+			
+		curl_setopt_array( $ch, $options );
+		
+		if($referer != null)
+			curl_setopt($ch, CURLOPT_REFERER, $referer);
+			
+		//Se houver valores no post, então adiciona-os a requisição, transformando-a em POST.		
+		curl_setopt($ch,CURLOPT_POST, true);
+		curl_setopt($ch,CURLOPT_POSTFIELDS, json_encode($postValues));	
+		
+		//Faz a requisição
+		$result = curl_exec($ch);
+		
+		//Fecha a requsição.
+		curl_close($ch);
+		
+		return $result;
+	}
 	/*
 	Função postData: Função para fazer as requisições GET e POST para o servidor da Fazenda.
 	Entradas:
@@ -451,13 +554,13 @@ class FazendaBot
 		{
 			$fields_string = "";
 			foreach($postValues as $key=>$value)			
-				$fields_string .= $key.'='.$value.'&';
+				$fields_string .= urlencode($key).'='.urlencode($value).'&';
 			
-			rtrim($fields_string, '&');
+			$fields_string = rtrim($fields_string, '&');
 			
 			curl_setopt($ch,CURLOPT_POST, count($postValues));
 			curl_setopt($ch,CURLOPT_POSTFIELDS, $fields_string);
-		}
+		}		
 		
 		//Faz a requisição
 		$result = curl_exec($ch);

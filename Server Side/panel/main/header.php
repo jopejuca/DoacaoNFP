@@ -8,21 +8,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-
+	<link rel="shortcut icon" href="/panel/favicon.ico" type="image/x-icon">
+	<link rel="icon" href="/panel/favicon.ico" type="image/x-icon">
     <title><?php echo Config::$AppName; ?></title>
 
     <!-- Bootstrap Core CSS -->
-    <link href="./bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/panel/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- MetisMenu CSS -->
-    <link href="./bower_components/metisMenu/dist/metisMenu.min.css" rel="stylesheet">
+    <link href="/panel/bower_components/metisMenu/dist/metisMenu.min.css" rel="stylesheet">
 
     <!-- Custom CSS -->
-    <link href="./dist/css/sb-admin-2.css" rel="stylesheet">
+    <link href="/panel/dist/css/sb-admin-2.css" rel="stylesheet">
 
     <!-- Custom Fonts -->
-    <link href="./bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-
+    <link href="/panel/bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+	<!-- jQuery -->
+    <script src="/panel/bower_components/jquery/dist/jquery.min.js"></script>
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -54,8 +56,10 @@
                         <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-user">
-                        <li><a href="#"><i class="fa fa-user fa-fw"></i> Perfil</a>
-                        </li>                        
+                        <li><a href="/panel/profile"><i class="fa fa-user fa-fw"></i> Perfil</a>
+                        </li>
+						<li><a href="/panel/settings"><i class="fa fa-gear fa-fw"></i> Configurações</a>
+                        </li>
                         <li class="divider"></li>
                         <li><a href="/panel/logout"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
                         </li>
@@ -78,6 +82,10 @@
                             <a href="/panel/dashboard"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
                         </li>
 						<li>
+                            <a href="/panel/profile"><i class="fa fa-user fa-fw"></i> Perfil</a>
+                        </li>
+						
+						<li>
                             <a href="#"><i class="fa fa-table fa-fw"></i> Notas<span class="fa arrow"></span></a>
 							<ul class="nav nav-second-level">
                                 <li>
@@ -87,9 +95,18 @@
                                     <a href="/panel/invoice/pending">Pendentes</a>
                                 </li>
 								<li>
-                                    <a href="/panel/invoice/received">Recebidas</a>
+                                    <a href="/panel/invoice/received">Contabilizadas</a>
+                                </li>
+								<li>
+                                    <a href="/panel/invoice/rejected">Rejeitadas</a>
                                 </li>								
                             </ul>
+                        </li>
+						<li>
+                            <a href="/panel/settings"><i class="fa fa-gear fa-fw"></i> Configurações</a>
+                        </li>
+						<li>
+                            <a href="/panel/logout"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
                         </li>
 						<?php
 						}
@@ -97,7 +114,10 @@
 						{
 						?>
 						<li>
-                            <a href="/panel/login"><i class="fa fa-edit fa-fw"></i> Login</a>
+                            <a href="/panel/login"><i class="fa fa-user fa-fw"></i> Login</a>
+                        </li>
+						<li>
+                            <a href="/panel/register"><i class="fa fa-edit fa-fw"></i> Cadastro</a>
                         </li>
 						<?php
 						}

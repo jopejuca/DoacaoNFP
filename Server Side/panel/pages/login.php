@@ -12,7 +12,7 @@ if(isset($_SESSION['ongId']))
 	return;
 }
 
-$loginError = false;
+$loginError = "";
 
 if(isset($_POST['Login']))
 {
@@ -22,22 +22,31 @@ if(isset($_POST['Login']))
 	{
 		if($ong->getPassword() == md5($_POST['password']))
 		{
-			$_SESSION['ongId'] = $ong->getId();
-			?>
-			<meta http-equiv="refresh" content="1;url=/panel/dashboard">
-			<script type="text/javascript">
-				window.location.href = "/panel/dashboard"
-			</script>
-			<?php
+			if($ong->getValid())
+			{
+				$_SESSION['ongId'] = $ong->getId();
+				$_SESSION['cpf'] = $ong->getCpf();
+				$_SESSION['remotePassword'] = $ong->getRemotePassword();
+				?>
+				<meta http-equiv="refresh" content="1;url=/panel/dashboard">
+				<script type="text/javascript">
+					window.location.href = "/panel/dashboard"
+				</script>
+				<?php
+			}
+			else
+			{
+				$loginError = "O cadastro da ONG ainda não foi validado pelos administradores!";
+			}
 		}
 		else
 		{
-			$loginError = TRUE;
+			$loginError = "Usuário ou senha incorretos!";
 		}
 	}
 	else
 	{
-		$loginError = TRUE;
+		$loginError = "Usuário ou senha incorretos!";
 	}
 }
 ?>
@@ -65,12 +74,12 @@ if(isset($_POST['Login']))
                                 <input type="submit" class="btn btn-lg btn-success btn-block" value="Login" name="Login"/>
                             </fieldset>
                         </form>
-						<?php if($loginError)
+						<?php if($loginError != "")
 							{?>
 							</br>
 						<div class="alert alert-danger alert-dismissable">
                                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                                Usuário ou senha incorretos!
+                                <?php echo $loginError;?>
                         
 						</div>
 						<?php }?>

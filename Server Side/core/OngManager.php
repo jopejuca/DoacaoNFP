@@ -31,7 +31,7 @@ class OngManager
 		$rawOng = Database::getInstance()->readRequest("SELECT * FROM ongs WHERE Id=?", array($ongId));
 		
 		if($rawOng)		
-			return new Ong($rawOng[0]["Id"], $rawOng[0]["Name"], $rawOng[0]["CNPJ"], $rawOng[0]["Website"],$rawOng[0]["Valid"],$rawOng[0]["Password"],$rawOng[0]["Email"]);
+			return new Ong($rawOng[0]["Id"], $rawOng[0]["Name"], $rawOng[0]["CNPJ"], $rawOng[0]["Website"],$rawOng[0]["Valid"],$rawOng[0]["Password"],$rawOng[0]["Email"],$rawOng[0]["CPF"],$rawOng[0]["RemotePassword"],$rawOng[0]["Address"]);
 		
 		return false;
 	}
@@ -46,7 +46,7 @@ class OngManager
 		$rawOng = Database::getInstance()->readRequest("SELECT * FROM ongs WHERE CNPJ=?", array($cnpj));
 		
 		if($rawOng)		
-			return new Ong($rawOng[0]["Id"], $rawOng[0]["Name"], $rawOng[0]["CNPJ"], $rawOng[0]["Website"],$rawOng[0]["Valid"],$rawOng[0]["Password"],$rawOng[0]["Email"]);
+			return new Ong($rawOng[0]["Id"], $rawOng[0]["Name"], $rawOng[0]["CNPJ"], $rawOng[0]["Website"],$rawOng[0]["Valid"],$rawOng[0]["Password"],$rawOng[0]["Email"],$rawOng[0]["CPF"],$rawOng[0]["RemotePassword"],$rawOng[0]["Address"]);
 		
 		return false;
 	}	
@@ -58,11 +58,12 @@ class OngManager
 	*/
 	function insertOng($ong)
 	{
-		if(Database::getInstance()->executeQuery("INSERT INTO ongs VALUES (`Name`,`CNPJ`, `Website`,`Password`,`Email`) (?,?,?,?,?)", array($ong->getName(),$ong->getCnpj(),$ong->getWebsite(),$ong->getPassword(),$ong->getEmail())))
+	
+		if(Database::getInstance()->executeQuery("INSERT INTO ongs (`Name`,`CNPJ`, `Website`,`Password`,`Email`,`CPF`,`RemotePassword`,`Address`) VALUES (?,?,?,?,?,?,?,?)", array($ong->getName(),$ong->getCnpj(),$ong->getWebsite(),$ong->getPassword(),$ong->getEmail(),$ong->getCpf(),$ong->getRemotePassword(),$ong->getAddress())))
 		{
 			$ong->setId(Database::getInstance()->getLastInsertId());
 			return true;
-		}
+		}		
 		return false;
 	}
 	/*
@@ -73,7 +74,7 @@ class OngManager
 	*/
 	function updateOng($ong)
 	{
-		return Database::getInstance()->executeQuery("UPDATE ongs SET Website=?,Valid=?,Password=?,Email=? WHERE Id=?", array($ong->getWebsite(), $ong->getValid()?1:0,$ong->getPassword(),$ong->getEmail(),$ong->getId()));
+		return Database::getInstance()->executeQuery("UPDATE ongs SET Website=?,Valid=?,Password=?,Email=?,CPF=?,RemotePassword=?,Address=? WHERE Id=?", array($ong->getWebsite(), $ong->getValid()?1:0,$ong->getPassword(),$ong->getEmail(),$ong->getCpf(),$ong->getRemotePassword(),$ong->getAddress(),$ong->getId()));
 	}
 }
 ?>

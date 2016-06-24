@@ -38,13 +38,15 @@ class Config
     */	
 	public static $SecureKey = "";
 	/**
-    * Caminho para uma pasta temporária onde o armazenamento dos cookies do Bot para acesso do site da Fazenda será feito. Necessita permissão de escrita.
+    * Caminho para uma pasta temporária onde o sistema fará armazenamento de cookies e imagens captcha do Bot para acesso do site da Fazenda. Necessita permissão de escrita.
     * @var string
     */	
-	public static $CookiesTempPath;
+	public static $TempPath;
 }
 
-Config::$CookiesTempPath = sys_get_temp_dir();
+Config::$TempPath = sys_get_temp_dir();
+
+date_default_timezone_set("America/Sao_Paulo");
 
 if(Config::$LogPhpErrors != "")
 {

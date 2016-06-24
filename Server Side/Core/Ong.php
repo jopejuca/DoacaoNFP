@@ -24,9 +24,14 @@ class Ong
     */
 	private $website;	
 	/**
+    * Endereço da ONG.
+    * @var string
+    */	
+	private $address;	
+	/**
     * Indica se a Ong foi autorizada ou não por algum administrador do sistema.
     * @var boolean
-    */	
+    */
 	private $valid = FALSE;
 	/**
     * Senha da Ong para acesso do website de gerenciamento.
@@ -38,10 +43,20 @@ class Ong
     * @var string
     */	
 	private $email;
+	/**
+    * CPF autorizado para cadastrar doações da ONG no site da Fazenda.
+    * @var string
+    */	
+	private $cpf;
+	/**
+    * Senha do CPF autorizado no site da Fazenda.
+    * @var string
+    */	
+	private $remotePassword;
 	
 	//Construtor
 	
-	function __construct($id, $name, $cnpj, $website, $valid, $pass, $email) 
+	function __construct($id, $name, $cnpj, $website, $valid, $pass, $email, $cpf, $remotePass, $address) 
 	{
 		$this->id = $id;
 		$this->name = $name;			
@@ -50,6 +65,9 @@ class Ong
 		$this->valid = $valid == 1;
 		$this->password = $pass;
 		$this->email = $email;
+		$this->cpf = $cpf;
+		$this->remotePassword = $remotePass;
+		$this->address = $address;
 	}
 	
 	//Getters	
@@ -80,7 +98,19 @@ class Ong
 	function getEmail()
 	{
 		return $this->email;
-	}		
+	}
+	function getCpf()
+	{
+		return $this->cpf;
+	}	
+	function getRemotePassword()
+	{
+		return $this->remotePassword;
+	}
+	function getAddress()
+	{
+		return $this->address;
+	}	
 	//Setters
 	function setId($value)
 	{
@@ -101,6 +131,18 @@ class Ong
 	function setEmail($value)
 	{
 		$this->email = $value;
+	}
+	function setCpf($value)
+	{
+		$this->cpf = $value;
+	}
+	function setRemotePassword($value)
+	{
+		$this->remotePassword = $value;
+	}
+	function setAddress($value)
+	{
+		$this->address = $value;
 	}
 }
 ?>

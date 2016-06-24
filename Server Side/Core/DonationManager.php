@@ -45,6 +45,21 @@ class DonationManager
 		return $donations;
 	}
 	/*
+	Função getDonationFromCode: Retorna um doação pelo código da nota fiscal.
+	Entradas:
+	- code (string) - Código da nota fiscal no formato 0000-0000-0000-0000-0000-0000-0000-0000-0000-0000-0000.	
+	Saída: classe Donation, caso exista a doação com o código especificado ou FALSE caso não exista.
+	*/
+	function getDonationFromCode($code)
+	{
+		$rawDonation = Database::getInstance()->readRequest("SELECT * FROM donations WHERE Code=?", array($code));
+		
+		if($rawDonation)		
+			return new Donation($rawDonation[0]["OngId"], $rawDonation[0]["Code"], $rawDonation[0]["Date"], $rawDonation[0]["Status"], $rawDonation[0]["RemoteStatus"],$rawDonation[0]["Ip"], $rawDonation[0]["Message"]);			
+		
+		return false;
+	}
+	/*
 	Função insertDonationToOng: Insere uma doação no banco de dados.
 	Entradas:
 	- donation (classe Donation) - Doação a ser inserida no banco de dados.	
@@ -52,7 +67,7 @@ class DonationManager
 	*/
 	function insertDonationToOng($donation)
 	{
-		return Database::getInstance()->executeQuery("INSERT INTO donation VALUES (?,?,?,?,?,?,?)", array($donation->getOngId(), $donation->getCode(), $donation->getStatus(), $donation->getDate(), $donation->getIp(), $donation->getMessage(), $donation->getRemoteStatus()));
+		return Database::getInstance()->executeQuery("INSERT INTO donations VALUES (?,?,?,?,?,?,?)", array($donation->getOngId(), $donation->getCode(), $donation->getStatus(), $donation->getDate(), $donation->getIp(), $donation->getMessage(), $donation->getRemoteStatus()));
 	}
 	/*
 	Função updateDonation: Atualiza dados de uma doação no banco de dados.
@@ -62,7 +77,7 @@ class DonationManager
 	*/
 	function updateDonation($donation)
 	{
-		return Database::getInstance()->executeQuery("UPDATE donation SET Status=?,RemoteStatus=? WHERE Code=?", array($donation->getStatus(), $donation->getRemoteStatus(),$donation->getCode()));
+		return Database::getInstance()->executeQuery("UPDATE donations SET Status=?,RemoteStatus=? WHERE Code=?", array($donation->getStatus(), $donation->getRemoteStatus(),$donation->getCode()));
 	}
 }
 ?>

@@ -45,7 +45,7 @@ class Database
 	*/
 	function executeQuery($sql, $params = array())
 	{
-		$query = $this->connection->prepare($sql);		
+		$query = $this->connection->prepare($sql);	
 		return $query->execute($params);
 	}
 	/*

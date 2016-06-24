@@ -8,14 +8,14 @@ function getDashboardStats($ongId)
 	$pendentInvoices = 0;
 	$rejectedInvoices = 0;	
 	
-	$newInvoices = Database::getInstance()->readRequest("SELECT COUNT(*) FROM donations WHERE Status=0")[0][0];
-	$newMessages = Database::getInstance()->readRequest("SELECT COUNT(*) FROM donations WHERE Status=0 and Message <> ''")[0][0];
-	$pendentInvoices = Database::getInstance()->readRequest("SELECT COUNT(*) FROM donations WHERE Status=1 and RemoteStatus=0")[0][0];
-	$rejectedInvoices = Database::getInstance()->readRequest("SELECT COUNT(*) FROM donations WHERE Status=1 and RemoteStatus=2")[0][0];
+	$newInvoices = Database::getInstance()->readRequest("SELECT COUNT(*) FROM donations WHERE OngId = ? AND Status=0",array($ongId))[0][0];
+	$newMessages = Database::getInstance()->readRequest("SELECT COUNT(*) FROM donations WHERE OngId = ? AND Status=0 and Message <> ''",array($ongId))[0][0];
+	$pendentInvoices = Database::getInstance()->readRequest("SELECT COUNT(*) FROM donations WHERE OngId = ? AND Status=1 and RemoteStatus=0",array($ongId))[0][0];
+	$rejectedInvoices = Database::getInstance()->readRequest("SELECT COUNT(*) FROM donations WHERE OngId = ? AND Status=1 and RemoteStatus=2",array($ongId))[0][0];
 
 	return array($newInvoices, $newMessages, $pendentInvoices, $rejectedInvoices);
 }
-function generateAceptedStats($ongId, $interval, $parts)
+function generateStats($ongId, $interval, $parts)
 {
 	$time = time();
 	$donations = DonationManager::getInstance()->getDonationsToOng($ongId, $time - $interval);
@@ -35,9 +35,6 @@ function generateAceptedStats($ongId, $interval, $parts)
 		}
 		foreach($donations as $donate)
 		{
-			if($donate->getRemoteStatus() != 1)
-			continue;
-			
 			$r =(int)(($time - $donate->getDate())/$partInterval);		
 			
 			$data[$r] = $data[$r] + 1;			
@@ -135,7 +132,7 @@ function generateAceptedStats($ongId, $interval, $parts)
                                 </div>
                             </div>
                         </div>
-                        <a href="#">
+                        <a href="/panel/invoice/pending">
                             <div class="panel-footer">
                                 <span class="pull-left">Ver detalhes</span>
                                 <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -172,7 +169,7 @@ function generateAceptedStats($ongId, $interval, $parts)
                 <div class="col-lg-8">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <i class="fa fa-bar-chart-o fa-fw"></i> Notas válidas nos últimos 30 dias                            
+                            <i class="fa fa-bar-chart-o fa-fw"></i> Notas recebidas nos últimos 30 dias                            
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
@@ -183,15 +180,41 @@ function generateAceptedStats($ongId, $interval, $parts)
                     <!-- /.panel -->
 				</div>
 				<!-- /.col-lg-8 -->
+				<div class="col-lg-4">     
+					<div class="chat-panel panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-comments fa-fw"></i>
+                            Mensagens dos Administradores                            
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <ul class="chat">
+							<?php
+								$messages = Database::getInstance()->readRequest("SELECT * FROM messages WHERE Destination=-1 OR Destination=? ORDER BY Date DESC", array($_SESSION['ongId']));								
+								foreach($messages as $message)
+								{
+									echo '<li class="left clearfix"><span class="chat-img pull-left"><img src="http://placehold.it/50/55C1E7/fff" alt="Avatar" class="img-circle" /></span>';
+									echo '<div class="chat-body clearfix"><div class="header"> <strong class="primary-font">'.$message["Author"].'</strong><small class="pull-right text-muted"><i class="fa fa-clock-o fa-fw"></i><time class="timeago" datetime="'.date("c",$message["Date"]).'">'.date("d/m/y g:i:s a",$message["Date"]).'</time></small>';
+									echo '</div><p>'.$message["Message"]."</p></div></li>";									
+								}
+							?>                                
+                            </ul>
+                        </div>
+                        <!-- /.panel-body -->
+                        <div class="panel-footer">                            
+                        </div>
+                        <!-- /.panel-footer -->
+                    </div>
+                    <!-- /.panel .chat-panel -->
+                </div>
+                <!-- /.col-lg-4 -->
 			</div>			
             <!-- /.row -->
-        </div>
-		<!-- jQuery -->
-			<script src="./bower_components/jquery/dist/jquery.min.js"></script>
+        </div>		
 			<!-- Morris Charts JavaScript -->
-			<script src="./bower_components/raphael/raphael-min.js"></script>
-			<script src="./bower_components/morrisjs/morris.min.js"></script>	
+			<script src="/panel/bower_components/raphael/raphael-min.js"></script>
+			<script src="/panel/bower_components/morrisjs/morris.min.js"></script>	
 							<script>
-							<?php echo generateAceptedStats($_SESSION['ongId'], 2592000, 30);// 90 dias?>
+							<?php echo generateStats($_SESSION['ongId'], 2592000, 30);// 90 dias?>
 							</script>
         <!-- /#page-wrapper -->  
