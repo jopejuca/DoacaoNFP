@@ -32,6 +32,7 @@ class Database
 	{
 		$this->database = $database;
 		$this->connection = new PDO("mysql:host=$host;dbname=".$database, $username, $password);
+		$this->connection->query("SET NAMES UTF8");
 	}
 	
 	//Métodos públicos

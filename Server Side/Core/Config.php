@@ -11,7 +11,7 @@ class Config
     * Host do banco de dados.
     * @var string
     */	
-	public static $Host = "127.0.0.1";
+	public static $Host = "localhost";
 	/**
     * Usuário do banco de dados.
     * @var string
